@@ -1,0 +1,10 @@
+{
+  "tarsnapLoc": "/usr/local/bin/tarsnap"
+, "maxAge": "2160h"
+, "backupSets": [
+    {
+      "name": "code"
+    , "dirs": ["/Users/andrew/code"]
+    }
+  ]
+}
