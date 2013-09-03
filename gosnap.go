@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"strings"
 	"time"
 )
 
@@ -23,7 +24,7 @@ func main() {
 			continue
 		}
 
-		log.Printf("backed up %s\n", s.Name)
+		log.Printf("backed up %s (%s)\n", s.Name, strings.Join(s.Dirs, ", "))
 	}
 
 	archives, err := tarsnap.archives()
@@ -33,8 +34,11 @@ func main() {
 
 	for _, a := range archives {
 		if a.age() > time.Duration(tarsnap.config.MaxAge) {
-			log.Printf("%s is older than %s; deleting", a.archiveName(), tarsnap.config.MaxAge)
-			tarsnap.delete(a)
+			log.Printf("deleting %s; it exceeds the max age of %s", a.archiveName(), time.Duration(tarsnap.config.MaxAge))
+
+			if err = tarsnap.delete(a); err != nil {
+				log.Printf("error deleting %s\n", a.archiveName())
+			}
 		}
 	}
 }
