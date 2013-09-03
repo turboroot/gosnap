@@ -27,7 +27,6 @@ func (t *tarsnap) backup(s *Set) error {
 
 func (t *tarsnap) archives() ([]*archive, error) {
 	cmd := exec.Command(t.config.TarsnapLoc, "--list-archives")
-
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return nil, err
@@ -54,7 +53,7 @@ func (t *tarsnap) archives() ([]*archive, error) {
 
 func (t *tarsnap) delete(a *archive) error {
 	cmd := exec.Command(t.config.TarsnapLoc, "-df", a.archiveName())
-	if err := cmd.Start(); err != nil {
+	if err := cmd.Run(); err != nil {
 		return err
 	}
 
